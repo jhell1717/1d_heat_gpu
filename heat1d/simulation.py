@@ -27,20 +27,39 @@ class HeatSimulation:
         self.ctx = StepContext(r=self.r)
 
     def run_cpu(self,T0:np.ndarray,cfg:SimulationConfig) -> tuple[np.ndarray,np.ndarray]:
+        
+        # Setup CPU instance, using Numba njit compiler.
         solver = CPUNumbaSolver()
+
+        # Create array same shape as initial conditions, T.
         T = T0.copy()
+
+        # Create empty array like T for which new values will go into.
         Tnew = np.empty_like(T)
+
+        # Apply boundary conditions to T[0] & T[-1] (i.e., ends).
         self.bc.apply(T)
 
+        # compute number of time steps in simulation.
         nsteps = int(cfg.t_final/self.dt)
+
+        # initialise empty arrays for times & frames. Frames = snapshots of T.
         frames = []
         times = []
 
+        # Steps through the simulation in time for nsteps.
         for n in range(nsteps):
+
+            # Take single time step with CPU solver.
             solver.step(T,Tnew,self.ctx)
+
+            # Step updates boundaries, so BCs are applied to new spatial solution (along x)
             self.bc.apply(Tnew)
+
+            # The new T along x becomes the current step
             T, Tnew = Tnew, T
 
+            # Append solution time and values at snapshot interval.
             if n% cfg.snapshot_every == 0:
                 frames.append(T.copy())
                 times.append(n*self.dt)
