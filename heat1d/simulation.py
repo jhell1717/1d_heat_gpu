@@ -46,4 +46,29 @@ class HeatSimulation:
                 times.append(n*self.dt)
 
         return np.array(times), np.array(frames)
+
+    def run_gpu(self, T0: np.ndarray, cfg: SimulationConfig, threads_per_block: int = 256) -> tuple[np.ndarray, np.ndarray]:
+        solver = GPUNumbaSolver(threads_per_block=threads_per_block)
+
+        # host -> device
+        h_T = T0.copy()
+        h_T[0] = self.bc.left
+        h_T[-1] = self.bc.right
+
+        d_T = cuda.to_device(h_T)
+        d_Tnew = cuda.device_array_like(d_T)
+
+        nsteps = int(cfg.t_final / self.dt)
+        frames = []
+        times = []
+
+        for n in range(nsteps):
+            solver.step_device(d_T, d_Tnew, self.ctx, self.bc.left, self.bc.right)
+            d_T, d_Tnew = d_Tnew, d_T  # swap
+
+            if (n % cfg.snapshot_every) == 0:
+                frames.append(d_T.copy_to_host())
+                times.append(n * self.dt)
+
+        return np.array(times), np.array(frames)
         
