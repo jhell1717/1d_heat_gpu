@@ -45,7 +45,7 @@ def main():
             print(f"Max |CPU-GPU| over snapshots: {err:.3e}")
 
         plot_space_time(x, t_gpu, frames_gpu, title="GPU: 1D Heat Equation (space-time)")
-        animate_line(x, t_gpu, frames_gpu, title="GPU: 1D Heat Equation")
+        # animate_line(x, t_gpu, frames_gpu, title="GPU: 1D Heat Equation")
 
 
     else:
