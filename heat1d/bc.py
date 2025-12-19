@@ -14,3 +14,5 @@ class DirichletBC(BoundaryCondition):
     def apply(self,T:np.ndarray) -> None:
         T[0] = self.left
         T[-1] = self.right
+
+        
