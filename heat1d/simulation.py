@@ -22,9 +22,10 @@ class HeatSimulation:
         self.params = params
         self.bc = bc
         self.dx = grid.dx
-        self.dt = params.dt(self.dx)
-        self.r = params.alpha * self.dt / (self.dx * self.dx)
-        self.ctx = StepContext(r=self.r)
+        self.dy = grid.dy
+        self.dt = params.dt_2d(self.dx, self.dy)
+        self.rx,self.ry = params.rx_ry(self.dx,self.dy)
+        self.ctx = StepContext(rx=self.rx,ry=self.ry)
 
     def run_cpu(self,T0:np.ndarray,cfg:SimulationConfig) -> tuple[np.ndarray,np.ndarray]:
         

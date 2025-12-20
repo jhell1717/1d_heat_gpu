@@ -8,9 +8,8 @@ class BoundaryCondition:
 
 @dataclass(frozen=True)
 class DirichletBC(BoundaryCondition):
-    left : float
-    right : float
-
+    Tbc : float
+    
     def apply(self,T:np.ndarray) -> None:
         T[0] = self.left
         T[-1] = self.right
