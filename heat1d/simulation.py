@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 from numba import cuda
 
-from .grid import Grid1D
+from .grid import Grid2D
 from .physics import HeatEquationParams
 from .bc import DirichletBC
 from .solvers.base import StepContext
@@ -17,7 +17,7 @@ class SimulationConfig:
     snapshot_every:int = 50
 
 class HeatSimulation:
-    def __init__(self,grid:Grid1D,params:HeatEquationParams,bc:DirichletBC):
+    def __init__(self,grid:Grid2D,params:HeatEquationParams,bc:DirichletBC):
         self.grid = grid
         self.params = params
         self.bc = bc

@@ -4,5 +4,5 @@ def gaussian_hotspot(x:np.ndarray,y:np.ndarray,base:float,amp:float,x0:float,y0:
     X,Y = np.meshgrid(x,y,indexing='xy')
 
     return base + amp * np.exp(
-        -0.5 * ((x - x0)**2 + (y-y0)**2) / sigma**2
+        -0.5 * ((X - x0)**2 + (Y-y0)**2) / sigma**2
         )

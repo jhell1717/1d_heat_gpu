@@ -14,7 +14,6 @@ def _step_cpu_numba(T:np.ndarray,Tnew:np.ndarray,rx:float,ry:float)->None:
                 + ry * (T[j-1,i] - 2*T[j,i] + T[j+1,i])
             )
 
-
 class CPUNumbaSolver(SolverBase):
     def step(self,T:np.ndarray,Tnew:np.ndarray,ctx:StepContext) -> None:
         _step_cpu_numba(T,Tnew,ctx.rx,ctx.ry)
