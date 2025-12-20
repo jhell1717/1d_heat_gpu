@@ -70,8 +70,6 @@ class HeatSimulation:
         # Setup GPU instance of solver. Uses CUDA.jit - specifying threads per block.
         solver = GPUNumbaSolver(threads_per_block=threads_per_block)
 
-        
-
         # host -> device
         # Create array like T0 on the host.
         h_T = T0.copy()
@@ -102,7 +100,7 @@ class HeatSimulation:
 
         # Iterate over number of time steps.
         snap_idx = 0
-        
+
         for n in range(nsteps):
             # Take step using GPU solver.
             # Computes number of blocks per grid using shape of T array. 
