@@ -27,7 +27,6 @@ def main():
     x = grid.x
     y = grid.y
     T0 = gaussian_hotspot(x,y, base=0.0, amp=1.0, x0=0.5 * L,y0=0.5*L, sigma=0.05 * L)
-    print(T0.shape)
 
     cfg = SimulationConfig(t_final=10, snapshot_every=1000)
 
@@ -46,6 +45,9 @@ def main():
         if len(t_cpu) == len(t_gpu):
             err = np.max(np.abs(frames_cpu - frames_gpu))
             print(f"Max |CPU-GPU| over snapshots: {err:.3e}")
+        
+        animate_field_2d(grid.x, grid.y, t_gpu, frames_gpu, title="2D Heat Diffusion")
+
 
     else:
         print("CUDA not available; skipping GPU run.")
