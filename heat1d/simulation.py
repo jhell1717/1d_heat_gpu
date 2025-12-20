@@ -101,6 +101,8 @@ class HeatSimulation:
         times = []
 
         # Iterate over number of time steps.
+        snap_idx = 0
+        
         for n in range(nsteps):
             # Take step using GPU solver.
             # Computes number of blocks per grid using shape of T array. 
