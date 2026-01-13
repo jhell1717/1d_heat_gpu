@@ -77,8 +77,8 @@ class HeatSimulation:
 
         # Manual specification of left & right boundary condition 
         # TODO: Build boundary conditions into the solver to avoid assignment here.
-        h_T[0] = self.bc.left
-        h_T[-1] = self.bc.right
+        h_T = T0.copy()
+        self.bc.apply(h_T)  # applies Tbc to all four edges
 
         # Move host T array to device
         d_T = cuda.to_device(h_T)
@@ -87,37 +87,31 @@ class HeatSimulation:
         d_Tnew = cuda.device_array_like(d_T)
 
         # Compute number of time steps.
+        Ny, Nx = d_T.shape
         nsteps = int(cfg.t_final / self.dt)
         n_snapshots = (nsteps + cfg.snapshot_every - 1) // cfg.snapshot_every
 
-        d_frames = cuda.device_array(
-            (n_snapshots, d_T.shape[0]),
-            dtype=d_T.dtype
-        )
+        # Allocate device frames storage (3D for 2D fields)
+        d_frames = cuda.device_array((n_snapshots, Ny, Nx), dtype=d_T.dtype)
 
-        # Initialise empty arrays for T frames & times steps.
-        frames = []
-        times = []
-
-        # Iterate over number of time steps.
         snap_idx = 0
+        Tbc = self.bc.Tbc  # single temperature for all boundaries
 
         for n in range(nsteps):
-            # Take step using GPU solver.
-            # Computes number of blocks per grid using shape of T array. 
-            solver.step_device(d_T, d_Tnew, self.ctx, self.bc.left, self.bc.right)
-            d_T, d_Tnew = d_Tnew, d_T  # swap
+            # Step on GPU
+            solver.step_device(d_T, d_Tnew, self.ctx, Tbc)
 
-            # # Save times and T solution if at timestep interval.
-            # if (n % cfg.snapshot_every) == 0:
-            #     frames.append(d_T.copy_to_host())
-            #     times.append(n * self.dt)
+            # Swap buffers
+            d_T, d_Tnew = d_Tnew, d_T
 
+            # Save snapshot every interval
             if n % cfg.snapshot_every == 0:
-                    d_frames[snap_idx, :] = d_T
-                    snap_idx += 1
+                d_frames[snap_idx, :, :] = d_T
+                snap_idx += 1
+
+        # Copy frames back to host
         frames = d_frames.copy_to_host()
         times = np.arange(n_snapshots) * cfg.snapshot_every * self.dt
-        # return times, frames
-        return np.array(times), np.array(frames)
+
+        return times, frames
         
