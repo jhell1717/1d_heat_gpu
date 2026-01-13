@@ -2,14 +2,14 @@
 import numpy as np
 import time
 
-from heat1d.grid import Grid2D
-from heat1d.physics import HeatEquationParams
-from heat1d.bc import DirichletBC
-from heat1d.ic import gaussian_hotspot
-from heat1d.simulation import HeatSimulation, SimulationConfig
-from heat1d.viz import plot_field_2d, animate_field_2d
+from heat2d.grid import Grid2D
+from heat2d.physics import HeatEquationParams
+from heat2d.bc import DirichletBC
+from heat2d.ic import gaussian_hotspot
+from heat2d.simulation import HeatSimulation, SimulationConfig
+from heat2d.viz import plot_field_2d, animate_field_2d
 
-from heat1d.utils import cuda_available
+from heat2d.utils import cuda_available
 
 def main():
     # Problem setup
