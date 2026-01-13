@@ -20,7 +20,7 @@ def heat_step_dirichlet_kernel(T,Tnew,rx,ry,Tbc):
         Tnew[i,j] = Tbc
 
 class GPUNumbaSolver(SolverBase):
-    def __init__(self,threads_per_block:int=(16,16)):
+    def __init__(self, threads_per_block: tuple[int,int] = (16,16)):
         self.threads_per_block = threads_per_block
 
     def step_device(self,d_T,d_Tnew,ctx:StepContext,Tbc:float)->None:
