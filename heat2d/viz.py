@@ -2,6 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import json
+import os
 
 def plot_field_2d(
     x: np.ndarray,
@@ -38,7 +40,11 @@ def animate_field_2d(
     Animate a 2D temperature field over time.
     frames shape: (nframes, Ny, Nx)
     """
+
+    
     fig, ax = plt.subplots()
+
+
 
     im = ax.imshow(
         frames[0],
@@ -61,6 +67,8 @@ def animate_field_2d(
         ax.set_title(f"{title}  t={times[k]:.4g}")
         return (im,)
 
+
+
     ani = FuncAnimation(
         fig,
         update,
@@ -69,4 +77,6 @@ def animate_field_2d(
         blit=False,
     )
 
-    plt.show()
+ 
+    
+    return ani
