@@ -1,6 +1,5 @@
 from __future__ import annotations
 import math
-from turtle import right
 import numpy as np
 from numba import cuda
 from .base import SolverBase, StepContext
