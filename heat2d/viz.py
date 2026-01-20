@@ -76,7 +76,4 @@ def animate_field_2d(
         interval=interval,
         blit=False,
     )
-
- 
-    
     return ani

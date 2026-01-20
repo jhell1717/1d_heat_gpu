@@ -1,2 +1,4 @@
 heat2d/__pycache__/
 heat2d/solvers/__pycache__/
+heat2d.egg-info/
+build/

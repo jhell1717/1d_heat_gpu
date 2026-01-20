@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "heat2d"
+version = "0.1.0"
+description = "2D heat conduction solver"
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy",
+    "numba",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+gpu = ["numba[cuda]"]
+
+[project.scripts]
+heat2d = "heat2d.cli:main"

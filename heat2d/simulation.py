@@ -3,13 +3,13 @@ from dataclasses import dataclass
 import numpy as np
 from numba import cuda
 
-from .grid import Grid2D
-from .physics import HeatEquationParams
-from .bc import DirichletBC
-from .solvers.base import StepContext
+from heat2d.grid import Grid2D
+from heat2d.physics import HeatEquationParams
+from heat2d.bc import DirichletBC
+from heat2d.solvers.base import StepContext
 
-from .solvers.cpu_numba import CPUNumbaSolver
-from .solvers.gpu_numba import GPUNumbaSolver
+from heat2d.solvers.cpu_numba import CPUNumbaSolver
+from heat2d.solvers.gpu_numba import GPUNumbaSolver
 
 @dataclass
 class SimulationConfig:
