@@ -1,3 +1,4 @@
 heat1d/__pycache__/
 heat2d.egg-info/
 build/
+run_demo.py
