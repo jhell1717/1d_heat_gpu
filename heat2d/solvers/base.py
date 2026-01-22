@@ -4,8 +4,9 @@ import numpy as np
 
 @dataclass
 class StepContext:
-    r: float
-
+    rx: float
+    ry: float
+    
 class SolverBase:
     def step(self,T:np.ndarray,Tnew:np.ndarray,ctx: StepContext) -> None:
         raise NotImplementedError
